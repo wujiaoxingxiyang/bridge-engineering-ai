@@ -9,6 +9,7 @@ from datetime import datetime
 import requests
 from typing import Dict, List
 import re
+import socket
 
 # ================== 获取本机局域网 IP ==================
 def get_local_ip():
@@ -24,6 +25,7 @@ def get_local_ip():
 # ================== 获取当前城市 ==================
 def get_location():
     try:
+        # 修复URL，移除多余空格
         response = requests.get("https://ipapi.co/json/", timeout=5)
         if response.status_code == 200:
             data = response.json()
@@ -43,6 +45,7 @@ def get_location():
 # ================== 获取天气数据 ==================
 def get_weather(lat: float, lon: float):
     try:
+        # 修复URL，移除多余空格
         url = "https://api.open-meteo.com/v1/forecast"
         params = {
             "latitude": lat,
@@ -129,6 +132,7 @@ def call_llm(prompt: str, max_tokens: int = 1000, temperature: float = 0.3) -> s
             "max_tokens": max_tokens,
             "temperature": temperature
         }
+        # 修复URL，移除多余空格
         response = requests.post(
             "https://api.deepseek.com/v1/chat/completions",
             headers=headers,
